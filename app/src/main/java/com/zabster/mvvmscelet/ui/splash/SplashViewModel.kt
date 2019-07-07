@@ -57,4 +57,9 @@ class SplashViewModel(repository: SimpleRepository) : ViewModel(), KoinComponent
         loginState.value = sharedPreferenceHelper
             .getString(SharedPreferenceTag.USER_TOKEN.key).isNotEmpty()
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
+    }
 }

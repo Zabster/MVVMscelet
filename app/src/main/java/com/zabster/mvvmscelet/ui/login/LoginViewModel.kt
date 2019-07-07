@@ -76,4 +76,8 @@ class LoginViewModel : ViewModel(), KoinComponent {
         sharedPreferenceHelper.putString(SharedPreferenceTag.USER_TOKEN.key, token)
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
+    }
 }
