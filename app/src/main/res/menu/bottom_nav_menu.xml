@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:title="@string/first_menu_title"
+            android:icon="@android:drawable/ic_secure"
+            android:id="@+id/first_menu"/>
+    <item
+            android:title="@string/second_menu_title"
+            android:id="@+id/second_menu"
+            android:icon="@android:drawable/ic_dialog_dialer"/>
+    <item
+            android:title="@string/third_menu_title"
+            android:id="@+id/third_menu"
+            android:icon="@android:drawable/ic_dialog_info"/>
+</menu>

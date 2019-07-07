@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MVVM scelet</string>
+    <string name="error_sync_message">Error sync, try again later</string>
+    <string name="first_menu_title">First</string>
+    <string name="second_menu_title">Second</string>
+    <string name="third_menu_title">Third</string>
+    <string name="first_fragment_message">This is first fragment</string>
+    <string name="second_fragment_message">This is second fragment</string>
+    <string name="third_fragment_message">This is third fragment</string>
+    <string name="login_btn_text">Login</string>
+    <string name="login_lbl_text">Try login to this amazing app</string>
+    <string name="hint_e_mail">E-mail</string>
+    <string name="hint_password">Password</string>
+
+</resources>
