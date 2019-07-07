@@ -67,7 +67,7 @@ class LoginViewModel : ViewModel(), KoinComponent {
                 override fun onNext(t: Long) {
                     setToken(email.plus(password))
                     _validateData.value = true
-                    _loading.value = false
+//                    _loading.value = false
                 }
 
                 override fun onError(e: Throwable) {

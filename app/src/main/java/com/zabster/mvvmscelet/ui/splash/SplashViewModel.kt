@@ -33,6 +33,11 @@ class SplashViewModel(repository: SimpleRepository) : ViewModel(), KoinComponent
     val loginState: LiveData<Boolean>
         get() = _loginState
 
+    init {
+        _error.value = false
+        _loading.value = false
+    }
+
     fun sync() {
         syncSomeData()
     }

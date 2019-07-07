@@ -26,11 +26,9 @@ class SplashActivity : AppCompatActivity() {
     private fun initObservers() {
         viewModel.loading.observe(this, Observer { isLoading: Boolean ->
             progressView.setVisability(isLoading)
-            errorText.setVisability(!isLoading)
         })
 
         viewModel.error.observe(this, Observer { isError: Boolean ->
-            progressView.setVisability(!isError)
             errorText.setVisability(isError)
         })
 
