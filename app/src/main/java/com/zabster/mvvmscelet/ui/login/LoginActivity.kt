@@ -41,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.messageForShowing.observe(this, Observer { message: String ->
             if (message.isNotEmpty()) {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                viewModel.clearMessage()
             }
         })
 

@@ -83,6 +83,10 @@ class LoginViewModel : ViewModel(), KoinComponent {
         sharedPreferenceHelper.putString(SharedPreferenceTag.USER_TOKEN.key, token)
     }
 
+    fun clearMessage() {
+        _messageForShowing.value = ""
+    }
+
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
