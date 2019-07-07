@@ -1,7 +1,7 @@
 package com.zabster.mvvmscelet.ui.login
 
 import android.util.Log
-import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zabster.mvvmscelet.utils.SharedPreferenceHelper
@@ -22,14 +22,21 @@ class LoginViewModel : ViewModel(), KoinComponent {
 
     private val disposable = CompositeDisposable()
 
-    val validateData = MutableLiveData<Boolean>()
-    val loading = MutableLiveData<Boolean>()
-    val messageForShowing = MutableLiveData<String>()
+    private val _validateData = MutableLiveData<Boolean>()
+    private val _loading = MutableLiveData<Boolean>()
+    private val _messageForShowing = MutableLiveData<String>()
+
+    val validateData: LiveData<Boolean>
+        get() = _validateData
+    val loading: LiveData<Boolean>
+        get() = _loading
+    val messageForShowing: LiveData<String>
+        get() = _messageForShowing
 
     // todo добавить шифрование для пароля
 
     fun initState() {
-        loading.value = false
+        _loading.value = false
     }
 
     fun tryLogin(email: String, password: String) {
@@ -40,13 +47,13 @@ class LoginViewModel : ViewModel(), KoinComponent {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             login(email, password)
         } else {
-            validateData.value = false
-            messageForShowing.value = "Invalid email or password" // todo hardcode
+            _validateData.value = false
+            _messageForShowing.value = "Invalid email or password" // todo hardcode
         }
     }
 
     private fun login(email: String, password: String) {
-        loading.value = true
+        _loading.value = true
         Observable.timer(2, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -59,14 +66,14 @@ class LoginViewModel : ViewModel(), KoinComponent {
 
                 override fun onNext(t: Long) {
                     setToken(email.plus(password))
-                    validateData.value = true
-                    loading.value = false
+                    _validateData.value = true
+                    _loading.value = false
                 }
 
                 override fun onError(e: Throwable) {
                     Log.e(toString(), "error login()", e)
-                    messageForShowing.value = "Error login" // todo hardcode
-                    loading.value = false
+                    _messageForShowing.value = "Error login" // todo hardcode
+                    _loading.value = false
                 }
 
             })

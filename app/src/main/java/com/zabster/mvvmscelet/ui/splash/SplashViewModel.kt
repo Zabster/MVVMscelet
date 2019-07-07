@@ -1,5 +1,6 @@
 package com.zabster.mvvmscelet.ui.splash
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zabster.mvvmscelet.repos.SimpleRepository
@@ -21,16 +22,23 @@ class SplashViewModel(repository: SimpleRepository) : ViewModel(), KoinComponent
 
     private val disposable = CompositeDisposable()
 
-    val loading = MutableLiveData<Boolean>()
-    val error = MutableLiveData<Boolean>()
-    val loginState = MutableLiveData<Boolean>()
+    private val _loading = MutableLiveData<Boolean>()
+    private val _error = MutableLiveData<Boolean>()
+    private val _loginState = MutableLiveData<Boolean>()
+
+    val loading: LiveData<Boolean>
+        get() = _loading
+    val error: LiveData<Boolean>
+        get() = _error
+    val loginState: LiveData<Boolean>
+        get() = _loginState
 
     fun sync() {
         syncSomeData()
     }
 
     private fun syncSomeData() {
-        loading.value = true
+        _loading.value = true
         Observable.timer(5, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -41,20 +49,21 @@ class SplashViewModel(repository: SimpleRepository) : ViewModel(), KoinComponent
                 }
 
                 override fun onNext(t: Long) {
-                    error.value = false
+                    _error.value = false
+                    _loading.value = false
                     checkLogin()
                 }
 
                 override fun onError(e: Throwable) {
-                    loading.value = false
-                    error.value = true
+                    _loading.value = false
+                    _error.value = true
                 }
             })
 
     }
 
     private fun checkLogin() {
-        loginState.value = sharedPreferenceHelper
+        _loginState.value = sharedPreferenceHelper
             .getString(SharedPreferenceTag.USER_TOKEN.key).isNotEmpty()
     }
 
