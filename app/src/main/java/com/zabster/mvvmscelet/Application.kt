@@ -21,6 +21,3 @@ class Application: Application() {
     }
 
 }
-
-
-// todo add data binding

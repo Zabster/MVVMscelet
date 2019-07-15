@@ -1,15 +1,15 @@
 package com.zabster.mvvmscelet.repos
 
 import com.zabster.mvvmscelet.net.RestApi
-import io.reactivex.Single
-import retrofit2.Response
+import kotlinx.coroutines.delay
 
 interface SimpleRepository {
-    fun syncSomeData(): Single<Response<Boolean>>
+    suspend fun syncSomeData(): Boolean
 }
 
-class SimpleRepositoryImpl(api: RestApi): SimpleRepository {
-    override fun syncSomeData(): Single<Response<Boolean>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class SimpleRepositoryImpl(api: RestApi) : SimpleRepository {
+    override suspend fun syncSomeData(): Boolean {
+        delay(2000)
+        return true
     }
 }

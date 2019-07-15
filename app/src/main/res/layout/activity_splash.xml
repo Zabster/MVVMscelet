@@ -37,6 +37,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
+                android:visibility="@{viewModel.loading}"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -44,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/ErrorTextStyle"
+                android:visibility="@{viewModel.error}"
                 android:text="@string/error_sync_message"
                 app:layout_constraintTop_toBottomOf="@+id/appCompatTextView"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -9,7 +9,6 @@ import com.zabster.mvvmscelet.R
 import com.zabster.mvvmscelet.databinding.ActivitySplashBinding
 import com.zabster.mvvmscelet.ui.base.MainActivity
 import com.zabster.mvvmscelet.ui.login.LoginActivity
-import com.zabster.mvvmscelet.utils.setVisability
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SplashActivity : AppCompatActivity() {
@@ -27,14 +26,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.loading.observe(this, Observer { isLoading: Boolean ->
-            binding.progressView.setVisability(isLoading)
-        })
-
-        viewModel.error.observe(this, Observer { isError: Boolean ->
-            binding.errorText.setVisability(isError)
-        })
-
         viewModel.loginState.observe(this, Observer { isLogin: Boolean ->
             if (isLogin) {
                 val baseIntent = Intent(this, MainActivity::class.java)

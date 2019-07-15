@@ -1,26 +1,21 @@
 package com.zabster.mvvmscelet.ui.login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.zabster.mvvmscelet.ui.abstracts.BaseViewModel
 import com.zabster.mvvmscelet.utils.SharedPreferenceHelper
 import com.zabster.mvvmscelet.utils.SharedPreferenceTag
-import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.util.concurrent.TimeUnit
+import java.lang.Exception
 
-class LoginViewModel : ViewModel(), KoinComponent {
+class LoginViewModel : BaseViewModel(), KoinComponent {
 
     private val sharedPreferenceHelper: SharedPreferenceHelper by inject()
-
-    private val disposable = CompositeDisposable()
 
     private val _validateData = MutableLiveData<Boolean>()
     private val _loading = MutableLiveData<Boolean>()
@@ -32,8 +27,6 @@ class LoginViewModel : ViewModel(), KoinComponent {
         get() = _loading
     val messageForShowing: LiveData<String>
         get() = _messageForShowing
-
-    // todo добавить шифрование для пароля
 
     fun initState() {
         _loading.value = false
@@ -53,42 +46,27 @@ class LoginViewModel : ViewModel(), KoinComponent {
     }
 
     private fun login(email: String, password: String) {
-        _loading.value = true
-        Observable.timer(2, TimeUnit.SECONDS)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<Long> {
-                override fun onComplete() {}
-
-                override fun onSubscribe(d: Disposable) {
-                    disposable.add(d)
-                }
-
-                override fun onNext(t: Long) {
-                    setToken(email.plus(password))
-                    _validateData.value = true
-//                    _loading.value = false
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.e(toString(), "error login()", e)
-                    _messageForShowing.value = "Error login" // todo hardcode
-                    _loading.value = false
-                }
-
-            })
+        uiScope.launch {
+            _loading.value = true
+            try {
+                delay(2000)
+                setToken(email.plus(password))
+                _validateData.value = true
+            } catch (e: Exception) {
+                _messageForShowing.value = "Error login" // todo hardcode
+            } finally {
+                _loading.value = false
+            }
+        }
     }
 
-    private fun setToken(token: String) {
-        sharedPreferenceHelper.putString(SharedPreferenceTag.USER_TOKEN.key, token)
+    private suspend fun setToken(token: String) {
+        withContext(Dispatchers.Main) {
+            sharedPreferenceHelper.putString(SharedPreferenceTag.USER_TOKEN.key, token)
+        }
     }
 
     fun clearMessage() {
         _messageForShowing.value = ""
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposable.clear()
     }
 }
